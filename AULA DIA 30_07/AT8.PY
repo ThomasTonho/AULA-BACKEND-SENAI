@@ -52,3 +52,4 @@ while True:
     else:
         letras_erradas.append(chute)
         tentativas -= 1
+        
