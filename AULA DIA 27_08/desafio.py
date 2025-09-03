@@ -6,7 +6,7 @@ import time
 
 class Bingo:
     def __init__(self):
-        pass
+        self.sorteados = set()  # Armazena os sorteios já realizados
     
     # Sorteia e retorne uma letra entre ('B','I','N','G','O')
     def sortear_letra(self):
@@ -38,9 +38,18 @@ class Bingo:
     # Realizar o sorteio da letra e numero e retornar
     # Exemplo B14
     def sorteio(self):
-        letra = self.sortear_letra()
-        numero = self.sortear_numero(letra)
-        return f"{letra}{numero}"
+        tentativas = 0
+        while True:
+            letra = self.sortear_letra()
+            numero = self.sortear_numero(letra)
+            resultado = f"{letra}{numero}"
+            if resultado not in self.sorteados:
+                self.sorteados.add(resultado)
+                return resultado
+            tentativas += 1
+            # Se já sorteou todos, para o jogo
+            if tentativas > 1000 or len(self.sorteados) >= 75:
+                return None
 
     # Se necessario pode criar outras funções auxiliares
 
@@ -54,6 +63,9 @@ class Bingo:
             print("Sorteando em 1")
             time.sleep(1)
             sorteio = self.sorteio()
+            if sorteio is None:
+                print("Todos os números já foram sorteados!")
+                break
             self.falar(sorteio)
             time.sleep(3)
             print(sorteio)
